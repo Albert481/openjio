@@ -1,12 +1,13 @@
 const asyncHandler = require('express-async-handler');
 
 const Activity = require('../models/activityModel');
+const User = require('../models/userModel');
 
 // @desc    Get activities
 // @route   GET /api/activity
 // @access  Private
 const getActivity = asyncHandler(async (req, res) => {
-    const activity = await Activity.find()
+    const activity = await Activity.find({ user: req.user.id })
 
     res.status(200).json(activity)
 })
@@ -25,6 +26,7 @@ const setActivity = asyncHandler(async (req, res) => {
         type: req.body.type,
         slot: req.body.slot,
         datetime: req.body.datetime,
+        user: req.user.id
     })
 
     res.status(200).json(activity)
@@ -42,7 +44,21 @@ const updateActivity = asyncHandler(async (req, res) => {
         throw new Error("Activity not found");
     }
 
-    const updateActivity = await Activity.findByIdAndUpdate(req.params.id, req.body, {new: true,})
+    const user = await User.findById(req.user.id);
+
+    // Check for user
+    if (!user) {
+        res.status(401);
+        throw new Error("User not found");
+    }
+
+    // Make sure the logged in user matches the activity user
+    if (activity.user.toString() !== user.id) {
+        res.status(401)
+        throw new Error("User not authorized");
+    }
+
+    const updateActivity = await Activity.findByIdAndUpdate(req.params.id, req.body, { new: true, })
 
     res.status(200).json(updateActivity)
 })
@@ -58,7 +74,19 @@ const deleteActivity = asyncHandler(async (req, res) => {
         throw new Error("Activity not found");
     }
 
-    const disabledActivity = await Activity.findByIdAndUpdate(req.params.id, {"enabled": false}, {new: true,})
+    // Check for user
+    if (!user) {
+        res.status(401);
+        throw new Error("User not found");
+    }
+
+    // Make sure the logged in user matches the activity user
+    if (activity.user.toString() !== user.id) {
+        res.status(401)
+        throw new Error("User not authorized");
+    }
+
+    const disabledActivity = await Activity.findByIdAndUpdate(req.params.id, { "enabled": false }, { new: true, })
 
     res.status(200).json(disabledActivity)
 })

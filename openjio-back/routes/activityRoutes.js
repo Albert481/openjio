@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const {protect} = require('../middleware/authMiddleware');
+
 const {
     getActivity,
     setActivity,
@@ -9,8 +11,8 @@ const {
 } = require('../controllers/activityController');
 
 
-router.route('/').get(getActivity).post(setActivity);
-router.route('/:id').delete(deleteActivity).put(updateActivity);
+router.route('/').get(protect, getActivity).post(protect, setActivity);
+router.route('/:id').delete(protect, deleteActivity).put(protect, updateActivity);
 
 
 module.exports = router;

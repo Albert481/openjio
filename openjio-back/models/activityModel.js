@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const activitySchema = mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
+    },
     name: {
         type: String,
         required: [true, 'Please add a name value']
@@ -18,7 +23,8 @@ const activitySchema = mongoose.Schema({
         required: [true, 'Please add a datetime(unix) value']
     },
     members: {
-        type: String
+        type: Array,
+        ref: 'User'
     },
     enabled: {
         type: Boolean
