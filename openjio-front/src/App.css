@@ -1,0 +1,10 @@
+body {
+  /* height: 90vh; */
+  /* display: flex; */
+  padding-top: 100px;
+  background: #f6f8fa;
+  font-weight: bold;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
