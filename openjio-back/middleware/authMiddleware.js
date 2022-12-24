@@ -21,7 +21,9 @@ const protect = asyncHandler(async (req, res, next) => {
             // } else {
                 // Verify Google token
                 const decoded = jwt.decode(token);
-                req.userId = decoded?.sub;
+                // req.userId = decoded?.sub;
+                // Get user from token
+                req.user = await User.findOne({"google_sub": decoded?.sub})
             // }
             next()
         } catch (error) {

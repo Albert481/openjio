@@ -7,11 +7,13 @@ const {
     getActivities,
     setActivity,
     updateActivity,
-    deleteActivity
+    deleteActivity,
+    getActiveActivities
 } = require('../controllers/activityController');
 
 
 router.route('/').get(getActivities).post(protect, setActivity);
+router.route('/active').get(getActiveActivities);
 router.route('/:id').delete(protect, deleteActivity).put(protect, updateActivity);
 
 

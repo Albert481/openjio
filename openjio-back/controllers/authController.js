@@ -16,10 +16,10 @@ const verifyGoogleToken = asyncHandler(async (req, res) => {
         let payload = ticket.getPayload();
 
         const { given_name, email, sub, picture } = payload
-        var user;
+
         // Check if user exists
-        const userExists = await User.findOne({"google_sub": sub})
-        if (!userExists) {
+        var user = await User.findOne({"google_sub": sub})
+        if (!user) {
             // Create user
             user = await User.create({
                 username: given_name,
@@ -27,18 +27,17 @@ const verifyGoogleToken = asyncHandler(async (req, res) => {
                 google_sub: sub,
                 picture: picture
             })
-        } else {
-            user = await User.findOne({"google_sub": payload['sub']})
         }
 
         // Return data for localStorage (user)
         res.json({
             _id: user._id,
-            picture: picture
+            picture: picture,
+            token: req.body.idToken
         })
 
     } catch (error) {
-        throw new Error(error)
+        throw new Error('Google Claims not valid')
     }
 
 })

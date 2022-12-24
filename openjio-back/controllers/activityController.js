@@ -13,6 +13,17 @@ const getActivities = asyncHandler(async (req, res) => {
     res.status(200).json(activities)
 })
 
+
+// @desc    Get active activities
+// @route   GET /api/activity
+// @access  Private
+const getActiveActivities = asyncHandler(async (req, res) => {
+    const activities = await Activity.find({"active": true});
+
+    res.status(200).json(activities)
+})
+
+
 // @desc    Set activity
 // @route   POST /api/activity
 // @access  Private
@@ -84,14 +95,15 @@ const deleteActivity = asyncHandler(async (req, res) => {
         throw new Error("User not authorized");
     }
 
-    const disabledActivity = await Activity.findByIdAndUpdate(req.params.id, { "enabled": false }, { new: true, })
+    await activity.remove()
 
-    res.status(200).json(disabledActivity)
+    res.status(200).json({ id: req.params.id })
 })
 
 
 module.exports = {
     getActivities,
+    getActiveActivities,
     setActivity,
     updateActivity,
     deleteActivity

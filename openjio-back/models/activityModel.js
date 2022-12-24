@@ -26,8 +26,9 @@ const activitySchema = mongoose.Schema({
         type: Array,
         ref: 'User'
     },
-    enabled: {
-        type: Boolean
+    active: {
+        type: Boolean,
+        default: true
     }
 }, {
     timestamps: true
