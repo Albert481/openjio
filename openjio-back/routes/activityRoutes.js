@@ -4,14 +4,14 @@ const router = express.Router();
 const {protect} = require('../middleware/authMiddleware');
 
 const {
-    getActivity,
+    getActivities,
     setActivity,
     updateActivity,
     deleteActivity
 } = require('../controllers/activityController');
 
 
-router.route('/').get(protect, getActivity).post(protect, setActivity);
+router.route('/').get(getActivities).post(protect, setActivity);
 router.route('/:id').delete(protect, deleteActivity).put(protect, updateActivity);
 
 

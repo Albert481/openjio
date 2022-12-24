@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const path = require('path')
 const dotenv = require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const colors = require('colors');
@@ -11,7 +12,11 @@ connectDB();
 
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
+app.use(cors({
+    origin: 'http://localhost:3000'
+}))
 
+app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/activity', require('./routes/activityRoutes'));
 app.use('/api/user', require('./routes/userRoutes'));
 

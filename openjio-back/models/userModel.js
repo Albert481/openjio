@@ -11,8 +11,13 @@ const userSchema = mongoose.Schema({
         unique: true
     },
     password: {
-        type: String,
-        required: [true, 'Please add a password value']
+        type: String
+    },
+    google_sub: {
+        type: String
+    },
+    picture: {
+        type: String
     }
 }, {
     timestamps: true

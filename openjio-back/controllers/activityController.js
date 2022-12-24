@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const asyncHandler = require('express-async-handler');
 
 const Activity = require('../models/activityModel');
@@ -6,10 +7,10 @@ const User = require('../models/userModel');
 // @desc    Get activities
 // @route   GET /api/activity
 // @access  Private
-const getActivity = asyncHandler(async (req, res) => {
-    const activity = await Activity.find({ user: req.user.id })
+const getActivities = asyncHandler(async (req, res) => {
+    const activities = await Activity.find();
 
-    res.status(200).json(activity)
+    res.status(200).json(activities)
 })
 
 // @desc    Set activity
@@ -20,13 +21,12 @@ const setActivity = asyncHandler(async (req, res) => {
     //     res.status(400)
     //     throw new Error("Please add a text field");
     // }
-
     const activity = await Activity.create({
         name: req.body.name,
         type: req.body.type,
         slot: req.body.slot,
-        datetime: req.body.datetime,
-        user: req.user.id
+        datetime: new Date(req.body.datetime).getTime() / 1000,
+        user: req.body.user
     })
 
     res.status(200).json(activity)
@@ -44,16 +44,14 @@ const updateActivity = asyncHandler(async (req, res) => {
         throw new Error("Activity not found");
     }
 
-    const user = await User.findById(req.user.id);
-
     // Check for user
-    if (!user) {
+    if (!req.user) {
         res.status(401);
         throw new Error("User not found");
     }
 
     // Make sure the logged in user matches the activity user
-    if (activity.user.toString() !== user.id) {
+    if (activity.user.toString() !== req.user.id) {
         res.status(401)
         throw new Error("User not authorized");
     }
@@ -75,13 +73,13 @@ const deleteActivity = asyncHandler(async (req, res) => {
     }
 
     // Check for user
-    if (!user) {
+    if (!req.user) {
         res.status(401);
         throw new Error("User not found");
     }
 
     // Make sure the logged in user matches the activity user
-    if (activity.user.toString() !== user.id) {
+    if (activity.user.toString() !== req.user.id) {
         res.status(401)
         throw new Error("User not authorized");
     }
@@ -93,7 +91,7 @@ const deleteActivity = asyncHandler(async (req, res) => {
 
 
 module.exports = {
-    getActivity,
+    getActivities,
     setActivity,
     updateActivity,
     deleteActivity
