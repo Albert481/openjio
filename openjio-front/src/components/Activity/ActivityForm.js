@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    Input, Select, NumberInput, Number, NumberInputField, Button, InputField, FormControl, FormLabel, FormErrorMessage, FormHelperText, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure
+    Input, Select, NumberInput, Number, NumberInputField, Button, InputField, FormControl, FormLabel, FormErrorMessage, FormHelperText, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Portal
 } from '@chakra-ui/react'
 import classes from './ActivityForm.module.css';
 import { createActivity } from '../../features/activity/activitySlice';
@@ -55,7 +55,8 @@ const ActivityForm = props => {
         setEnteredActivityTypeValue(event.target.value);
     };
     return (
-        <Modal onClose={props.onClose} isOpen={props.isOpen} size="xl">
+        <Portal>
+            <Modal onClose={props.onClose} isOpen={props.isOpen} size="xl">
             <form className={classes.container} onSubmit={formSubmitHandler}>
                 <ModalOverlay />
                 <ModalContent>
@@ -86,8 +87,8 @@ const ActivityForm = props => {
                         </FormControl>
 
                         <FormControl isRequired mt={5}>
-                            <FormLabel>Member Slots</FormLabel>
-                            <NumberInput maxW={24} clampValueOnBlur={false} onChange={setEnteredActivitySlotValue} value={enteredActivitySlotValue} variant='filled'>
+                            <FormLabel>Activity Size (2-50)</FormLabel>
+                            <NumberInput defaultValue={2} min={2} max={50} maxW={24} onChange={setEnteredActivitySlotValue} value={enteredActivitySlotValue} variant='filled'>
                                 <NumberInputField />
                             </NumberInput>
 
@@ -104,6 +105,8 @@ const ActivityForm = props => {
                 </ModalContent>
             </form>
         </Modal>
+        </Portal>
+        
 
         // <Modal onClose={props.onClose}>
         //     <form className={classes.container} onSubmit={formSubmitHandler}>

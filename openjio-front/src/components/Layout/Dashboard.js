@@ -2,12 +2,13 @@ import { useState, useEffect, Fragment } from 'react';
 import Button from '../UI/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom'
-import Card from '../UI/Card'
+// import Card from '../UI/Card'
+import { Heading, Card, CardHeader, CardBody, Box } from '@chakra-ui/react'
 import Login from '../Auth/Login'
 import ActivityForm from '../Activity/ActivityForm';
 import ActivityItem from '../Activity/ActivityItem';
 import ActivityDetail from '../Activity/ActivityDetail';
-import classes from './Dashboard.module.css';
+// import classes from './Dashboard.module.css';
 
 import { getActiveActivities, reset } from '../../features/activity/activitySlice';
 import { openLoginModal, closeLoginModal } from '../../features/modal/modalSlice';
@@ -57,7 +58,7 @@ const Dashboard = (props) => {
     const hideActivityDetailModalHandler = () => {
         setIsShowActivityDetail(false);
     }
-    
+
     let filteredActivities
     if (user) {
         filteredActivities = activities.reduce((r, o) => {
@@ -65,17 +66,17 @@ const Dashboard = (props) => {
             return r;
         }, { personalActivities: [], allActivities: [] });
     } else {
-        filteredActivities = {"allActivities": activities}
+        filteredActivities = { "allActivities": activities }
     }
 
     return <Fragment>
         {props.onCreateActivity && <ActivityForm isOpen={props.onCreateActivity} onClose={hideActivityCreateModalHandler} />}
         {isLoginOpen && <Login onClose={() => dispatch(closeLoginModal())} />}
-        {isShowActivityDetail && <ActivityDetail onClose={hideActivityDetailModalHandler} currentActivity={currentActivity} />}
+        {isShowActivityDetail && <ActivityDetail isOpen={isShowActivityDetail} onClose={hideActivityDetailModalHandler} currentActivity={currentActivity} />}
 
         {user && filteredActivities.personalActivities.length > 0 && (
-            <Card className={classes.cardbg} >
-                <h3>You're hosting!</h3>
+            <Box mt={5}>
+                <Heading size='md' ml={5}>You're hosting!</Heading>
                 {filteredActivities.personalActivities.map(activity => (
                     <ActivityItem
                         key={activity._id}
@@ -83,13 +84,12 @@ const Dashboard = (props) => {
                         onClick={() => showActivityDetailModalHandler(activity)}
                     ></ActivityItem>
                 ))}
-
-            </Card>
+            </Box>
         )}
 
-        {filteredActivities.allActivities.length > 0 ? (
-            <Card className={classes.cardbg} >
-                <h3>Happening Soon!</h3>
+        {filteredActivities.allActivities.length > 0 && (
+            <Box mt={5}>
+                <Heading size='md' ml={5} >Happening Soon!</Heading>
                 {filteredActivities.allActivities.map(activity => (
                     <ActivityItem
                         key={activity._id}
@@ -97,15 +97,9 @@ const Dashboard = (props) => {
                         onClick={() => showActivityDetailModalHandler(activity)}
                     ></ActivityItem>
                 ))}
-
-            </Card>
-        ) : (
-            <Card className={classes.cardbg} >
-                <h3>No activities found. Start hosting one!</h3>
-            </Card>
+            </Box>
 
         )}
-
     </Fragment>
 }
 

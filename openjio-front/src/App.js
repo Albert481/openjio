@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import './App.css';
+// import './App.css';
 import Header from './components/Layout/Header';
 import Dashboard from './components/Layout/Dashboard';
 import Login from './components/Auth/Login';
@@ -22,9 +22,7 @@ function App() {
       <Router>
           <Fragment>
             <Header onCreateActivity={showActivityCreateModalHandler}/>
-            <Routes>
-              <Route path='/' element={<Dashboard  onCreateActivity={isCreateActivity} hideCreateActivity={showActivityCreateModalHandler} />} />
-            </Routes>
+            <Dashboard onCreateActivity={isCreateActivity} hideCreateActivity={showActivityCreateModalHandler} />
           </Fragment>
       </Router>
 
