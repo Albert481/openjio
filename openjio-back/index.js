@@ -10,11 +10,21 @@ const app = express();
 
 connectDB();
 
+var allowedDomains = ['http://openjio.albertdev.xyz', 'http://openjio-front.onrender.com'];
+
+var corsOptions = {
+    origin: function (origin, callback) {
+      if (allowedDomains.indexOf(origin) !== -1) {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS'))
+      }
+    }
+  }
+
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
-app.use(cors({
-    origin: 'http://localhost:3000'
-}))
+app.use(cors(corsOptions))
 
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/activity', require('./routes/activityRoutes'));
