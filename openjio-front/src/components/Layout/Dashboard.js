@@ -31,11 +31,6 @@ const Dashboard = (props) => {
         }
     }, [user, navigate, isError, message, dispatch])
 
-    // const [activityItems, setActivityItems] = useState([
-    //     { id: 'a1', activityName: 'Swimming', activitySlot: 3, activityDate: new Date(2023, 1, 20), activityTime: "08:30" },
-    //     { id: 'a2', activityName: 'Mahjong', activitySlot: 4, activityDate: new Date(2023, 1, 20), activityTime: "08:30" }
-    // ]);
-    // const [isCreateActivity, setIsCreateActivity] = useState(false);
 
     const [isShowActivityDetail, setIsShowActivityDetail] = useState(false);
     const [currentActivity, setCurrentActivity] = useState();
@@ -62,36 +57,55 @@ const Dashboard = (props) => {
     const hideActivityDetailModalHandler = () => {
         setIsShowActivityDetail(false);
     }
-
-    // const createActivityHandler = (enteredActivityValues) => {
-    //     const activityValues = {
-    //         ...enteredActivityValues,
-    //         id: Math.random().toString()
-    //     };
-    //     setActivityItems((prevActivityValues) => {
-    //         return [activityValues, ...prevActivityValues];
-    //     })
-    // }
+    
+    let filteredActivities
+    if (user) {
+        filteredActivities = activities.reduce((r, o) => {
+            r[o.user === user._id ? 'personalActivities' : 'allActivities'].push(o);
+            return r;
+        }, { personalActivities: [], allActivities: [] });
+    } else {
+        filteredActivities = {"allActivities": activities}
+    }
 
     return <Fragment>
         {props.onCreateActivity && <ActivityForm onClose={hideActivityCreateModalHandler} />}
-        {/* {props.isCreateActivity && <ActivityForm onClose={() => {isCreateActivity(false)}} onCreateActivity={createActivityHandler} />} */}
-        {/* {props.isCreateActivity && <ActivityForm onClose={hideActivityCreateModalHandler} />} */}
-        {/* <Login onClose={hideLoginModalHandler} /> */}
         {isLoginOpen && <Login onClose={() => dispatch(closeLoginModal())} />}
-        {isShowActivityDetail && <ActivityDetail onClose={hideActivityDetailModalHandler} currentActivity={currentActivity}  />}
+        {isShowActivityDetail && <ActivityDetail onClose={hideActivityDetailModalHandler} currentActivity={currentActivity} />}
 
-        <Card className={classes.cardbg} >
-            <h3>Happening Soon!</h3>
-            {activities.map(activity => (
-                <ActivityItem
-                    key={activity._id}
-                    activity={activity}
-                    onClick={() => showActivityDetailModalHandler(activity)}
-                ></ActivityItem>
-            ))}
-            
-        </Card>
+        {user && filteredActivities.personalActivities.length > 0 && (
+            <Card className={classes.cardbg} >
+                <h3>You're hosting!</h3>
+                {filteredActivities.personalActivities.map(activity => (
+                    <ActivityItem
+                        key={activity._id}
+                        activity={activity}
+                        onClick={() => showActivityDetailModalHandler(activity)}
+                    ></ActivityItem>
+                ))}
+
+            </Card>
+        )}
+
+        {filteredActivities.allActivities.length > 0 ? (
+            <Card className={classes.cardbg} >
+                <h3>Happening Soon!</h3>
+                {filteredActivities.allActivities.map(activity => (
+                    <ActivityItem
+                        key={activity._id}
+                        activity={activity}
+                        onClick={() => showActivityDetailModalHandler(activity)}
+                    ></ActivityItem>
+                ))}
+
+            </Card>
+        ) : (
+            <Card className={classes.cardbg} >
+                <h3>No activities found. Start hosting one!</h3>
+            </Card>
+
+        )}
+
     </Fragment>
 }
 

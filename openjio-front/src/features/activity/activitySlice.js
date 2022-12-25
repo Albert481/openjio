@@ -32,7 +32,18 @@ export const getActiveActivities = createAsyncThunk('activity/getActive', async(
     }
 })
 
-// Delete activity
+// Join activity
+export const joinActivity = createAsyncThunk('activity/join', async(id, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token;
+        return await activityService.joinActivity(id, token);
+    } catch (error) {
+        const message = (error.response & error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
+// Disable activity
 export const disableActivity = createAsyncThunk('activity/disable', async(id, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token;
@@ -74,6 +85,19 @@ export const activitySlice = createSlice({
                 state.activities = action.payload
             })
             .addCase(getActiveActivities.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(joinActivity.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(joinActivity.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.activities = state.activities.map((activity) => (activity._id === action.payload._id ? action.payload : activity))
+            })
+            .addCase(joinActivity.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload

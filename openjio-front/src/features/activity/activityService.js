@@ -29,6 +29,18 @@ const getActiveActivities = async () => {
     return response.data
 }
 
+// Join activity
+const joinActivity = async (activityId, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const response = await axios.put(API_URL + activityId + '/join', {}, config)
+
+    return response.data
+}
+
 // Disable activity
 const disableActivity = async (activityId, token) => {
     const content = {
@@ -49,6 +61,7 @@ const activityService = {
     createActivity,
     getActivities,
     getActiveActivities,
+    joinActivity,
     disableActivity
 }
 

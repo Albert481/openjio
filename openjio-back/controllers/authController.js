@@ -32,6 +32,7 @@ const verifyGoogleToken = asyncHandler(async (req, res) => {
         // Return data for localStorage (user)
         res.json({
             _id: user._id,
+            username: given_name,
             picture: picture,
             token: req.body.idToken
         })

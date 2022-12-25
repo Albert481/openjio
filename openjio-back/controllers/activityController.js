@@ -18,7 +18,7 @@ const getActivities = asyncHandler(async (req, res) => {
 // @route   GET /api/activity
 // @access  Private
 const getActiveActivities = asyncHandler(async (req, res) => {
-    const activities = await Activity.find({"active": true});
+    const activities = await Activity.find({"active": true}).populate("members");
 
     res.status(200).json(activities)
 })
@@ -28,10 +28,6 @@ const getActiveActivities = asyncHandler(async (req, res) => {
 // @route   POST /api/activity
 // @access  Private
 const setActivity = asyncHandler(async (req, res) => {
-    // if (!req.body.text) {
-    //     res.status(400)
-    //     throw new Error("Please add a text field");
-    // }
     const activity = await Activity.create({
         name: req.body.name,
         type: req.body.type,
@@ -43,9 +39,37 @@ const setActivity = asyncHandler(async (req, res) => {
     res.status(200).json(activity)
 })
 
+// @desc    Join activity
+// @route   PUT /api/activity/:id/join
+// @access  Private
+const joinActivity = asyncHandler(async (req, res) => {
+    const activity = await Activity.findById(req.params.id)
+    let members = activity.members;
+
+    if (!activity) {
+        res.status(400)
+        throw new Error("Activity not found");
+    }
+
+    // Check for user
+    if (!req.user) {
+        res.status(401);
+        throw new Error("User not found");
+    }
+
+    const index = members.findIndex((member) => member.toString() === req.user._id.toString());
+
+    if (index === -1) {
+        members.push(req.user._id.toString())
+    } else {
+        members = members.filter((member) => member.toString() != req.user._id.toString())
+    }
+    const updatedActivity = await Activity.findByIdAndUpdate(req.params.id, {"members": members}, { new: true, }).populate("members")
+    res.status(200).json(updatedActivity)
+})
 
 // @desc    Update activity
-// @route   PUT /api/activity:id
+// @route   PUT /api/activity/:id
 // @access  Private
 const updateActivity = asyncHandler(async (req, res) => {
     const activity = await Activity.findById(req.params.id)
@@ -67,9 +91,9 @@ const updateActivity = asyncHandler(async (req, res) => {
         throw new Error("User not authorized");
     }
 
-    const updateActivity = await Activity.findByIdAndUpdate(req.params.id, req.body, { new: true, })
+    const updatedActivity = await Activity.findByIdAndUpdate(req.params.id, req.body, { new: true, })
 
-    res.status(200).json(updateActivity)
+    res.status(200).json(updatedActivity)
 })
 
 // @desc    Delete activity
@@ -105,6 +129,7 @@ module.exports = {
     getActivities,
     getActiveActivities,
     setActivity,
+    joinActivity,
     updateActivity,
     deleteActivity
 }
