@@ -38,7 +38,7 @@ const ActivityDetail = (props) => {
             <h2>Activity Details</h2>
             <p>Name: {currentActivity.name}</p>
             <p>Type: {currentActivity.type}</p>
-            <p>Date: {currentActivity.date}</p>
+            <p>Date: {new Date(currentActivity.datetime * 1000).toLocaleString()}</p>
             <p>Members: ({membersJoined.length}/{currentActivity.slot})</p>
             <div>
                 {membersJoined.map((member, idx) => {

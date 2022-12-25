@@ -69,7 +69,7 @@ const Dashboard = (props) => {
     }
 
     return <Fragment>
-        {props.onCreateActivity && <ActivityForm onClose={hideActivityCreateModalHandler} />}
+        {props.onCreateActivity && <ActivityForm isOpen={props.onCreateActivity} onClose={hideActivityCreateModalHandler} />}
         {isLoginOpen && <Login onClose={() => dispatch(closeLoginModal())} />}
         {isShowActivityDetail && <ActivityDetail onClose={hideActivityDetailModalHandler} currentActivity={currentActivity} />}
 

@@ -10,7 +10,7 @@ const app = express();
 
 connectDB();
 
-var allowedDomains = ['https://openjio.albertdev.xyz', 'https://openjio.onrender.com/'];
+var allowedDomains = ['http://localhost:3000','https://openjio.albertdev.xyz', 'https://openjio.onrender.com/'];
 
 var corsOptions = {
     origin: function (origin, callback) {

@@ -12,7 +12,6 @@ const initialState = {
 // Create new activity
 export const createActivity = createAsyncThunk('activity/create', async(activityData, thunkAPI) => {
     try {
-        console.log(activityData)
         const token = thunkAPI.getState().auth.user.token;
         return await activityService.createActivity(activityData, token);
     } catch (error) {
