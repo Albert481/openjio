@@ -71,7 +71,7 @@ const Dashboard = (props) => {
 
     return <Fragment>
         {props.onCreateActivity && <ActivityForm isOpen={props.onCreateActivity} onClose={hideActivityCreateModalHandler} />}
-        {isLoginOpen && <Login onClose={() => dispatch(closeLoginModal())} />}
+        {isLoginOpen && <Login isOpen={isLoginOpen} onClose={() => dispatch(closeLoginModal())} /> }
         {isShowActivityDetail && <ActivityDetail isOpen={isShowActivityDetail} onClose={hideActivityDetailModalHandler} currentActivity={currentActivity} />}
 
         {user && filteredActivities.personalActivities.length > 0 && (
