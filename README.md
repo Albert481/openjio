@@ -1,7 +1,7 @@
 # OpenJio 
 A web application with a mobile-first design built with the MERN stack (MongoDB, Express, React and NodeJS) which connects users to host or join activities.
 
-Demo: [openjio.albertdev.xyz](openjio.albertdev.xyz)
+Demo: [openjio.albertdev.xyz](https://openjio.albertdev.xyz)
 
 ## Motivation
 
