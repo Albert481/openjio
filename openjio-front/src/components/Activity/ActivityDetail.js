@@ -1,35 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // import Input from '../UI/Input';
 // import Modal from '../UI/Modal';
 // import Button from '../UI/Button';
-import {
-    Input, Select, NumberInput, Number, NumberInputField, Heading, Button, Text, InputField, FormControl, FormLabel, FormErrorMessage, FormHelperText, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Portal
-} from '@chakra-ui/react'
+import { Button, Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Portal } from '@chakra-ui/react'
 import classes from './ActivityDetail.module.css';
 import { disableActivity, joinActivity } from '../../features/activity/activitySlice';
 
 const ActivityDetail = (props) => {
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.auth)
-    const { activities } = useSelector((state) => state.activities)
 
     let currentActivity = props.currentActivity
 
     const [membersJoined, setMembersJoined] = useState(currentActivity?.members)
 
     // Runs twice under STRICT mode, might need to look into this
-
-    const hasJoinedActivity = membersJoined.find(member => member._id == user._id);
-    let joinText = "Join"
-
+    const hasJoinedActivity = membersJoined.find(member => member._id === user._id);
     const joinActivityHandler = async () => {
         dispatch(joinActivity(currentActivity._id))
         if (hasJoinedActivity) {
-            joinText = "Join"
-            setMembersJoined(currentActivity.members.filter((member) => member._id != user._id));
+            setMembersJoined(currentActivity.members.filter((member) => member._id !== user._id));
         } else {
-            joinText = "Leave"
             setMembersJoined((prevState) => [...prevState, user])
         }
     }
@@ -37,7 +29,7 @@ const ActivityDetail = (props) => {
     
     return (
         <Portal>
-            <Modal onClose={props.onClose} isOpen={props.isOpen}>
+            <Modal onClose={props.onClose} isOpen={props.isOpen} isCentered>
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>Activity Details</ModalHeader>
@@ -54,7 +46,7 @@ const ActivityDetail = (props) => {
                             {membersJoined.map((member, idx) => {
                                 return (
                                     <div key={idx} className={classes.div}>
-                                        <img className={classes.img} src={member.picture}></img>
+                                        <img className={classes.img} src={member.picture} alt="profile"></img>
                                         <p>{member.username}</p>
                                     </div>
                                 )
@@ -64,9 +56,9 @@ const ActivityDetail = (props) => {
                     <ModalFooter>
                         <Button mr={3} onClick={props.onClose}>Close</Button>
 
-                        {user._id != currentActivity.user._id ? (
+                        {user._id !== currentActivity.user._id ? (
                             <Button colorScheme='pink' mr={3} type="submit" onClick={joinActivityHandler}>
-                                {membersJoined.find(member => member._id == user._id) ? (
+                                {membersJoined.find(member => member._id === user._id) ? (
                                     "Leave"
                                 ) : (
                                     "Join"

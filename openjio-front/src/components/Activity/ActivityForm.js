@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    Input, Select, NumberInput, Number, NumberInputField, Button, InputField, FormControl, FormLabel, FormErrorMessage, FormHelperText, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Portal
+    Input, Select, NumberInput, NumberInputField, Button, FormControl, FormLabel, FormErrorMessage, FormHelperText, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Portal
 } from '@chakra-ui/react'
 import classes from './ActivityForm.module.css';
 import { createActivity } from '../../features/activity/activitySlice';

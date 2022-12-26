@@ -44,9 +44,9 @@ const Login = props => {
 
     return (
         <Portal>
-            <Modal onClose={props.onClose} isOpen={props.isOpen} size='md'>
+            <Modal onClose={props.onClose} isOpen={props.isOpen} size='md' isCentered>
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent maxW="20rem">
                     <ModalHeader mt={4}><Center>Please sign in</Center></ModalHeader>
                     <ModalCloseButton />
                     <ModalBody pb={6}>
@@ -58,6 +58,7 @@ const Login = props => {
                             mb={4}
                             size="md"
                             isLoading={isLoading}
+                            loadingText='Waiting..'
                             onClick={() => {
                                 setIsLoading(true);
                                 /* global google */

@@ -1,7 +1,7 @@
 
 
 // import classes from './ActivityItem.module.css';
-import { Box, Flex, Avatar, AvatarBadge, AvatarGroup, Text, Link, Heading, Button, Card, CardBody, Icon, Menu, MenuButton, MenuList, MenuItem, MenuDivider, useDisclosure, useColorModeValue, Stack, Center, } from '@chakra-ui/react';
+import { Avatar, AvatarGroup, Text, Card, CardBody } from '@chakra-ui/react';
 
 
 var calcDaysAway = (value) => {
