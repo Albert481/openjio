@@ -16,6 +16,7 @@ const ActivityForm = props => {
     const [enteredActivitySlotValue, setEnteredActivitySlotValue] = useState('');
     const [enteredActivityDateValue, setEnteredActivityDateValue] = useState(null);
     const [enteredActivityLocationValue, setEnteredActivityLocationValue] = useState('');
+    const [enteredActivityContactValue, setEnteredActivityContactValue] = useState('');
 
     const isDateError = enteredActivityDateValue === ''
     function validateDateTime(value) {
@@ -33,6 +34,7 @@ const ActivityForm = props => {
             slot: enteredActivitySlotValue,
             datetime: enteredActivityDateValue,
             location: enteredActivityLocationValue,
+            contact: enteredActivityContactValue,
             user: user._id
         }
 
@@ -45,6 +47,7 @@ const ActivityForm = props => {
         setEnteredActivityDateValue('');
         setEnteredActivityTypeValue('');
         setEnteredActivityLocationValue('');
+        setEnteredActivityContactValue('');
     }
 
     const activityNameChangeHandler = event => {
@@ -55,12 +58,15 @@ const ActivityForm = props => {
         setEnteredActivityLocationValue(event.target.value);
     };
 
+    const activityContactChangeHandler = event => {
+        setEnteredActivityContactValue(event.target.value);
+    };
+
     const activityDateChangeHandler = event => {
         if (validateDateTime(event.target.value)) {
             setEnteredActivityDateValue(event.target.value);
         } else {
             setEnteredActivityDateValue('');
-            console.log("Date must be in the future")
         }
         
     };
@@ -104,15 +110,23 @@ const ActivityForm = props => {
                             </FormControl>
 
                             <FormControl isRequired mt={5}>
-                                <FormLabel>Activity Size (2-50)</FormLabel>
-                                <NumberInput defaultValue={2} min={2} max={50} maxW={24} onChange={setEnteredActivitySlotValue} value={enteredActivitySlotValue} variant='filled'>
+                                <FormLabel>Activity Size (1-50)</FormLabel>
+                                <NumberInput defaultValue={1} min={1} max={50} maxW={24} onChange={setEnteredActivitySlotValue} value={enteredActivitySlotValue} variant='filled'>
                                     <NumberInputField />
                                 </NumberInput>
+                                <FormHelperText>*how many participants excluding yourself</FormHelperText>
+                            </FormControl>
+
+                            <FormControl isRequired mt={5}>
+                                <FormLabel>Contact</FormLabel>
+                                <Input onChange={activityContactChangeHandler} variant='filled' />
+                                <FormHelperText>*leave your contact details so participants may contact you</FormHelperText>
                             </FormControl>
 
                             <FormControl mt={5}>
                                 <FormLabel>Location</FormLabel>
-                                <Input type='location' onChange={activityLocationChangeHandler} variant='filled' />
+                                <Input onChange={activityLocationChangeHandler} variant='filled' />
+                                <FormHelperText>*where the activity is happening</FormHelperText>
                             </FormControl>
 
 

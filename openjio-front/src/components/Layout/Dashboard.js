@@ -60,11 +60,13 @@ const Dashboard = (props) => {
     }
 
     let filteredActivities
+    // Get all activities related to the logged in user and store in personalActivities, the rest goes into allActivities
     if (user) {
         filteredActivities = activities.reduce((r, o) => {
-            r[o.user === user._id ? 'personalActivities' : 'allActivities'].push(o);
+            r[o.user._id === user._id ? 'personalActivities' : 'allActivities'].push(o);
             return r;
-        }, { personalActivities: [], allActivities: [] });
+        }, { personalActivities: [], allActivities: [] }
+        );
     } else {
         filteredActivities = { "allActivities": activities }
     }
@@ -77,7 +79,8 @@ const Dashboard = (props) => {
         {user && filteredActivities.personalActivities.length > 0 && (
             <Box mt={5}>
                 <Heading size='md' ml={5}>You're hosting!</Heading>
-                {filteredActivities.personalActivities
+                {
+                    [...filteredActivities.personalActivities]
                     .sort((a, b) => a.datetime > b.datetime ? 1 : -1)
                     .map(activity => (
                     <ActivityItem
@@ -92,7 +95,8 @@ const Dashboard = (props) => {
         {filteredActivities.allActivities.length > 0 && (
             <Box mt={5}>
                 <Heading size='md' ml={5} >Happening Soon!</Heading>
-                {filteredActivities.allActivities
+                {
+                [...filteredActivities.allActivities]
                 .sort((a, b) => a.datetime > b.datetime ? 1 : -1)
                 .map(activity => (
                     <ActivityItem

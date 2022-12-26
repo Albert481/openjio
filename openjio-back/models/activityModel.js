@@ -25,6 +25,9 @@ const activitySchema = mongoose.Schema({
     location: {
         type: String
     },
+    contact: {
+        type: String
+    },
     members: {
         type: Array,
         ref: 'User'

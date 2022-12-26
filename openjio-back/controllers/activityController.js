@@ -18,7 +18,7 @@ const getActivities = asyncHandler(async (req, res) => {
 // @route   GET /api/activity
 // @access  Private
 const getActiveActivities = asyncHandler(async (req, res) => {
-    const activities = await Activity.find({"active": true, "datetime": { $gt: new Date().getTime() / 1000 } }).populate("members");
+    const activities = await Activity.find({"active": true, "datetime": { $gt: new Date().getTime() / 1000 } }).populate("members").populate("user");
 
     res.status(200).json(activities)
 })
@@ -28,14 +28,16 @@ const getActiveActivities = asyncHandler(async (req, res) => {
 // @route   POST /api/activity
 // @access  Private
 const setActivity = asyncHandler(async (req, res) => {
-    const activity = await Activity.create({
+    let activity = await Activity.create({
         name: req.body.name,
         type: req.body.type,
         slot: req.body.slot,
         datetime: new Date(req.body.datetime).getTime() / 1000,
         location: req.body.location,
+        contact: req.body.contact,
         user: req.body.user
     })
+    activity = await activity.populate("user")
 
     res.status(200).json(activity)
 })
@@ -65,7 +67,7 @@ const joinActivity = asyncHandler(async (req, res) => {
     } else {
         members = members.filter((member) => member.toString() != req.user._id.toString())
     }
-    const updatedActivity = await Activity.findByIdAndUpdate(req.params.id, {"members": members}, { new: true, }).populate("members")
+    const updatedActivity = await Activity.findByIdAndUpdate(req.params.id, {"members": members}, { new: true, }).populate("members").populate("user")
     res.status(200).json(updatedActivity)
 })
 

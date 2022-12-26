@@ -47,6 +47,8 @@ const ActivityDetail = (props) => {
                         <Text>Type: {currentActivity.type}</Text>
                         <Text>Location: {currentActivity.location}</Text>
                         <Text>Date: {new Date(currentActivity.datetime * 1000).toLocaleString()}</Text>
+                        <Text>Host: {currentActivity.user.username}</Text>
+                        <Text>Contact: {currentActivity.contact}</Text>
                         <Text>Members: ({membersJoined.length}/{currentActivity.slot})</Text>
                         <div>
                             {membersJoined.map((member, idx) => {
@@ -62,7 +64,7 @@ const ActivityDetail = (props) => {
                     <ModalFooter>
                         <Button mr={3} onClick={props.onClose}>Close</Button>
 
-                        {user._id != currentActivity.user ? (
+                        {user._id != currentActivity.user._id ? (
                             <Button colorScheme='pink' mr={3} type="submit" onClick={joinActivityHandler}>
                                 {membersJoined.find(member => member._id == user._id) ? (
                                     "Leave"
