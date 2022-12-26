@@ -77,7 +77,9 @@ const Dashboard = (props) => {
         {user && filteredActivities.personalActivities.length > 0 && (
             <Box mt={5}>
                 <Heading size='md' ml={5}>You're hosting!</Heading>
-                {filteredActivities.personalActivities.map(activity => (
+                {filteredActivities.personalActivities
+                    .sort((a, b) => a.datetime > b.datetime ? 1 : -1)
+                    .map(activity => (
                     <ActivityItem
                         key={activity._id}
                         activity={activity}
@@ -90,7 +92,9 @@ const Dashboard = (props) => {
         {filteredActivities.allActivities.length > 0 && (
             <Box mt={5}>
                 <Heading size='md' ml={5} >Happening Soon!</Heading>
-                {filteredActivities.allActivities.map(activity => (
+                {filteredActivities.allActivities
+                .sort((a, b) => a.datetime > b.datetime ? 1 : -1)
+                .map(activity => (
                     <ActivityItem
                         key={activity._id}
                         activity={activity}

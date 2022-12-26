@@ -36,7 +36,7 @@ const Header = props => {
 
                 <Flex alignItems={'center'}>
                     <Stack direction={'row'} spacing={5}>
-                        <Button colorScheme='pink' size='lg' onClick={onCreateActivity}>Host</Button>
+                        <Button mt={1} colorScheme='pink' size='md' onClick={onCreateActivity}>Host</Button>
                         <Menu>
                             <MenuButton
                                 as={Button}
@@ -79,27 +79,6 @@ const Header = props => {
                 </Flex>
             </Flex>
         </Box>
-        {/* <header className={classes.header}>
-            <div className={classes.navbarleft}>
-                <Heading size='lg'>OPENJIO</Heading>
-            </div>
-
-            <div className={classes.navbarright}>
-
-
-                <Button onClick={onCreateActivity}>Host</Button>
-                {user ? (
-                    <>
-                        <img src={user.picture} alt="profile_pic" /><Heading size='md'>{user.username}</Heading>
-                    </>
-
-                ) : (
-                    <img src="https://i.imgur.com/WxNkK7J_d.webp?maxwidth=640&shape=thumb&fidelity=medium" alt="profile_pic"></img>
-                )}
-
-            </div>
-
-        </header> */}
     </Fragment>
 }
 

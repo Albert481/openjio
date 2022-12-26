@@ -22,6 +22,9 @@ const activitySchema = mongoose.Schema({
         type: String,
         required: [true, 'Please add a datetime(unix) value']
     },
+    location: {
+        type: String
+    },
     members: {
         type: Array,
         ref: 'User'

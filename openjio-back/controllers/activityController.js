@@ -18,7 +18,7 @@ const getActivities = asyncHandler(async (req, res) => {
 // @route   GET /api/activity
 // @access  Private
 const getActiveActivities = asyncHandler(async (req, res) => {
-    const activities = await Activity.find({"active": true}).populate("members");
+    const activities = await Activity.find({"active": true, "datetime": { $gt: new Date().getTime() / 1000 } }).populate("members");
 
     res.status(200).json(activities)
 })
@@ -33,6 +33,7 @@ const setActivity = asyncHandler(async (req, res) => {
         type: req.body.type,
         slot: req.body.slot,
         datetime: new Date(req.body.datetime).getTime() / 1000,
+        location: req.body.location,
         user: req.body.user
     })
 

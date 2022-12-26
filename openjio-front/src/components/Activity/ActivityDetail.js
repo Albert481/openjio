@@ -34,8 +34,7 @@ const ActivityDetail = (props) => {
         }
     }
 
-
-
+    
     return (
         <Portal>
             <Modal onClose={props.onClose} isOpen={props.isOpen}>
@@ -44,11 +43,11 @@ const ActivityDetail = (props) => {
                     <ModalHeader>Activity Details</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody pb={6}>
-                        <Text></Text>
-                        <p>Name: {currentActivity.name}</p>
-                        <p>Type: {currentActivity.type}</p>
-                        <p>Date: {new Date(currentActivity.datetime * 1000).toLocaleString()}</p>
-                        <p>Members: ({membersJoined.length}/{currentActivity.slot})</p>
+                        <Text>Name: {currentActivity.name}</Text>
+                        <Text>Type: {currentActivity.type}</Text>
+                        <Text>Location: {currentActivity.location}</Text>
+                        <Text>Date: {new Date(currentActivity.datetime * 1000).toLocaleString()}</Text>
+                        <Text>Members: ({membersJoined.length}/{currentActivity.slot})</Text>
                         <div>
                             {membersJoined.map((member, idx) => {
                                 return (
